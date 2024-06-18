@@ -17,7 +17,6 @@ from modules.spritesheet import Spritesheet
 from modules.swordattack import SwordAttack
 
 # TODOS:
-# first problem: file paths are absolute. change code to relative file imports
 
 # make abstact base classes for character and enemies and derive them from that
 
@@ -49,24 +48,43 @@ class Game():
         self.enemy_spritesheet = Spritesheet('img/enemy.png')
         self.attack_spritesheet = Spritesheet('img/attack.png')
 
+        # new spritesheets - consolidate them to a big one at some point
+        self.arrow_spritesheet = Spritesheet('img/arrows.png')
+        self.tree_spritesheet = Spritesheet('img/tree.png')
+
         self.intro_background = pygame.image.load('img/introbackground.png')
         self.go_background = pygame.image.load('img/gameover.png')
 
         self.map_1 = map_1
         self.map_2 = map_2
 
+        
+
     def create_tilemap(self, tilemap):
         for j, row in enumerate(tilemap):
             for i, tile in enumerate(row):
                 Ground(self, i, j)
-                if tile == 'B':
-                    Block(self, i, j)
-                if tile == 'E':
+                if tile == 10:
+                    Block(self, i, j, 'rock')
+                if tile == 11:
+                    Block(self, i, j, 'tree')
+                if tile == 12:
+                    Block(self, i, j, 'appletree')
+                if tile == 1:
                     Enemy(self, i, j)
-                if tile == 'P':
+                if tile == 00:
                     self.player = Player(self, i, j)
-                if tile == 'D':
-                    Door(self, i, j)
+                if tile == 20:
+                    Door(self, i, j, 'right', 'a1')
+                if tile == 21:
+                    Door(self, i, j, 'left', 'a0')  
+
+                
+                #   -1 = . = Empty
+                #   00 = P = Player
+                #   01 = E = Enemy 1
+                #   10 = B = Rock
+                #   20 = D = Door 0
         
 
     def new_game(self):
@@ -158,7 +176,7 @@ class Game():
     def show_intro_screen(self):
         intro = True
 
-        title = self.font.render('Fabians Game', True, BLACK)
+        title = self.font.render('Fabians and Aarons Game', True, BLACK)
         title_rect = title.get_rect(x=10, y=10)
 
         play_button = Button(10, 50, 100, 50, WHITE, BLACK, 'Play', 32)

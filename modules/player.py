@@ -117,9 +117,13 @@ class Player(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, self.game.doors, False)
         if hits:
             print('Collide with door')
+            print(hits[0].destination)
             for sprite in self.game.all_sprites:
-                sprite.kill()
-            self.game.create_tilemap(self.game.map_2)
+                sprite.kill()     
+            if hits[0].destination == 'a0':
+                self.game.create_tilemap(self.game.map_1)
+            if hits[0].destination == 'a1':
+                self.game.create_tilemap(self.game.map_2)
 
     def animate(self):
         
